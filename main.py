@@ -1,32 +1,33 @@
 
 import time
-import pyperclip
-import subprocess
+from datetime import date
 import pyautogui
 import os
 import msvcrt
 import pyperclip
 
-usrInputCoords = [662,531]
-usrPassworCoords = [662,648]
+usrInputCoords = [700,450]
+usrPassworCoords = [780,530]
 contador = 0
+today = date.today()
 numeroTxt = input("Agregue el nombre del txt")
 linesArray = []
 coordPestanas = {
-    "1" : [132,71],
-    "2" : [416,72],
-    "3" : [680,72],
-    "4" : [944,72],
-    "5" : [1197,72],
-    "6" : [1431,72],
+    "1" : [119,65],
+    "2" : [343,65],
+    "3" : [540,72],
+    "4" : [768,72],
+    "5" : [988,72],
+    "6" : [1203,72],
+    "7" : [1424,58]
 
 }
 
 
 
 botones = {
-    "iniciarSesion" : [1394,278],
-    "start" : [900,160]
+    "iniciarSesion" : [1400,230],
+    "start" : [740,140]
 }
 """"
 
@@ -42,17 +43,23 @@ PRESIONAR INICIAR
 
 #aBRIR PROGRAMA
 
-os.startfile(r"C:\Users\Cristobal\AppData\Local\Programs\Ultra\Ultra.exe")
+#os.startfile(r"C:\Users\rafae\AppData\Local\Programs\Ultra\Ultra.exe")
 time.sleep(12)
 print("Fin sleep")
 
+with open("lastview.txt","+a") as file:
+    file.write(f'{today}\n {numeroTxt}\n')
+
+"""
+
 #ABRIR LAS PESTAÑAS 
-while contador <=5:
+while contador <=6:
     
     try:
         contador = contador+1
-        print("CLicked here")
+        
         pyautogui.click("images/icon.png")
+        print("CLicked here")
     except:    
         pyautogui.click("images/addPestanaUltra.png")
         contador = contador+1
@@ -61,18 +68,16 @@ while contador <=5:
 #Recorrer pestañar
 for p in coordPestanas:
     time.sleep(2)
-    pyautogui.click(x=coordPestanas[p][0],y=coordPestanas[p][1])
+    pyautogui.Sinthianice@protonmail.comclick(x=coordPestanas[p][0],y=coordPestanas[p][1])
     time.sleep(3)
     pyautogui.click(x=botones["iniciarSesion"][0],y=botones["iniciarSesion"][1])
     time.sleep(3)
+"""
     
    
 with open(f"{numeroTxt}.txt","r") as file:
         lines = file.readlines()
         lineArray = lines
-
-
-
     
     
 for idx,line in enumerate(lines):       
@@ -83,11 +88,13 @@ for idx,line in enumerate(lines):
     pyautogui.click(x=coordPestanas[f"{idx+1}"][0],y=coordPestanas[f"{idx+1}"][1])
     pyautogui.click(x=usrInputCoords[0],y=usrInputCoords[1])
     pyautogui.hotkey ("ctrl","v")
-    time.sleep(3)
+    time.sleep(2)
     
     password = lineArray[1]
     pyperclip.copy(password)
-    time.sleep(5)
+    time.sleep(2)
+    pyautogui.click(x=usrPassworCoords[0],y=usrPassworCoords[1])  
+
     pyautogui.click(x=usrPassworCoords[0],y=usrPassworCoords[1])  
     
     time.sleep(2)

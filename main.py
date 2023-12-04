@@ -1,17 +1,18 @@
 
 import time
 from datetime import date
-import pyautogui
-import os
 import msvcrt
-import pyperclip
 
-usrInputCoords = [700,450]
-usrPassworCoords = [780,530]
+
+from utils import IniciarSession, IntroducirUsuario, LastViewWrite, LeerLineas, StartClick, cerrarPestanas, pestanasRecorrer, reiniciarIp
+
+usrInputCoords = [648,426]
+usrPassworCoords = [780,550]
 contador = 0
+seleccion = input('\n Ingresa 1 para funcion principal \n Presione 2 para cambiar ip \n Presione 3 para cerrar ventanas')
+seleccion = int(seleccion)
 today = date.today()
-numeroTxt = input("Agregue el nombre del txt")
-linesArray = []
+linesArray =[]
 coordPestanas = {
     "1" : [119,65],
     "2" : [343,65],
@@ -29,92 +30,36 @@ botones = {
     "iniciarSesion" : [1400,230],
     "start" : [740,140]
 }
-""""
-
-RECORRER PESTAÑAS 
-CLICAR INICIAR SESSION
-COPIAR USER 
-PEGAR EN FORMULARIO
-COPIAR PASSWORD 
-PEGAR EN FORMULARIO
-PRESIONAR ENTER
-PRESIONAR INICIAR
-"""
-
 #aBRIR PROGRAMA
 
 #os.startfile(r"C:\Users\rafae\AppData\Local\Programs\Ultra\Ultra.exe")
-time.sleep(12)
-print("Fin sleep")
 
-with open("lastview.txt","+a") as file:
-    file.write(f'{today}\n {numeroTxt}\n')
 
-"""
 
-#ABRIR LAS PESTAÑAS 
-while contador <=6:
+def MainFunction():     
     
-    try:
-        contador = contador+1
-        
-        pyautogui.click("images/icon.png")
-        print("CLicked here")
-    except:    
-        pyautogui.click("images/addPestanaUltra.png")
-        contador = contador+1
+    numeroTxt = input("Agregue el nombre del txt")
+    time.sleep(5)
+    LastViewWrite(today, numeroTxt)
+    #pestanasRecorrer(contador)
    
+    #IniciarSession(coordPestanas, botones)
 
-#Recorrer pestañar
-for p in coordPestanas:
-    time.sleep(2)
-    pyautogui.Sinthianice@protonmail.comclick(x=coordPestanas[p][0],y=coordPestanas[p][1])
-    time.sleep(3)
-    pyautogui.click(x=botones["iniciarSesion"][0],y=botones["iniciarSesion"][1])
-    time.sleep(3)
-"""
+    lines = LeerLineas(numeroTxt)
     
-   
-with open(f"{numeroTxt}.txt","r") as file:
-        lines = file.readlines()
-        lineArray = lines
+    IntroducirUsuario(usrInputCoords, usrPassworCoords, coordPestanas, lines)
+    StartClick(coordPestanas, botones)   
+    msvcrt.getch()
+
+
+if seleccion == 1:
+    MainFunction()
     
+elif seleccion == 2:
+    reiniciarIp()
     
-for idx,line in enumerate(lines):       
-    #obteniendo usr y password
-    lineArray = line.split(",")
-    usr = lineArray[0]
-    pyperclip.copy(usr)
-    pyautogui.click(x=coordPestanas[f"{idx+1}"][0],y=coordPestanas[f"{idx+1}"][1])
-    pyautogui.click(x=usrInputCoords[0],y=usrInputCoords[1])
-    pyautogui.hotkey ("ctrl","v")
-    time.sleep(2)
-    
-    password = lineArray[1]
-    pyperclip.copy(password)
-    time.sleep(2)
-    pyautogui.click(x=usrPassworCoords[0],y=usrPassworCoords[1])  
-
-    pyautogui.click(x=usrPassworCoords[0],y=usrPassworCoords[1])  
-    
-    time.sleep(2)
-    pyautogui.hotkey("ctrl","v")
-    time.sleep(2)   
-    pyautogui.press('enter')
-
-
-for p in coordPestanas:
-    time.sleep(2)
-    pyautogui.click(x=coordPestanas[p][0],y=coordPestanas[p][1])
-    pyautogui.click(x=botones["start"][0], y= botones["start"][1])
-    time.sleep(2)   
-
-
-
-msvcrt.getch()
-
-
-
+elif seleccion == 3:
+    cerrarPestanas()
 
            
         
